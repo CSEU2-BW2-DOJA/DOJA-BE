@@ -7,6 +7,7 @@ TOKEN = config("TOKEN")
 
 auth = {"Authorization": "Token " + TOKEN}
 
+
 def get_last_proof():
     res = requests.get(
         "https://lambda-treasure-hunt.herokuapp.com/api/bc/last_proof/",
@@ -30,10 +31,12 @@ def valid_proof(last_proof, proof, difficulty):
     guess_hash = hashlib.sha256(guess).hexdigest()
     return guess_hash[:difficulty] == checksum
 
+
 last_proof_obj = get_last_proof()
 last_proof = last_proof_obj['proof']
 diff = last_proof_obj['difficulty']
 time.sleep(last_proof_obj['cooldown'])
+
 
 def proof_of_work(start_point):
     print("Mining new block")
