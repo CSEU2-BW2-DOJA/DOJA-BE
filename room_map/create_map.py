@@ -32,13 +32,6 @@ reverse_directions = {"n": "s", "s": "n", "e": "w", "w": "e"}
 
 
 def get_unexplored_room(queue):
-    """Finds the next unexplored room in the players current room
-    and adds it to the queue.
-
-    Arguments:
-        player {class} -- instance of the Player class
-        queue {class} -- instance of the Queue class
-    """
     current_room_id = str(room_details[-1]["room_id"])
 
     # get direction available in the player's current room
@@ -74,16 +67,6 @@ def get_unexplored_room(queue):
 
 
 def bft_find_other_room():
-    """Uses bft to find the path to the closest room with an unexplored
-    direction. When it finds one it returns the path. Returns None
-    when an unexplored direction can not be found
-
-    Arguments:
-        player {class} -- instance of the Player class
-
-    Returns:
-        list -- path to the room with an unexplored direction
-    """
     current_room_id = str(room_details[-1]["room_id"])
 
     # create new room queue
