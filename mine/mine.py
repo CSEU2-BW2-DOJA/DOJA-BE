@@ -53,7 +53,10 @@ def proof_of_work(start_point):
     print("Mining with proof...")
     response = mine(proof)
     print(response)
+    return response
 
 
 if __name__ == "__main__":
-    proof_of_work(0)
+    while True:
+        res = proof_of_work(0)
+        time.sleep(res["cooldown"])
