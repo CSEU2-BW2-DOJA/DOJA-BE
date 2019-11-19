@@ -20,8 +20,9 @@ def mine(new_proof):
     res = requests.post(
         "https://lambda-treasure-hunt.herokuapp.com/api/bc/mine/",
         headers=auth,
-        json={"proof": f"{new_proof}"}
+        json={"proof": new_proof}
     )
+    print(res)
     return res.json()
 
 
@@ -52,7 +53,6 @@ def proof_of_work(start_point):
 
     print("Mining with proof...")
     response = mine(proof)
-    print(response)
     return response
 
 
