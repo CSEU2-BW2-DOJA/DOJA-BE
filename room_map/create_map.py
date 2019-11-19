@@ -1,8 +1,12 @@
-import json
-from time import sleep
-import requests
-from decouple import config
+
 from util import Queue
+from decouple import config
+import requests
+from time import sleep
+import json
+
+from treasure import sell_treasure, take_treasure
+
 
 TOKEN = config("TOKEN")
 
@@ -154,34 +158,16 @@ while q.size() > 0:
     # get the response
     data = response.json()
 
-    print(f"\nNew Item: {data['items']}\n")
-    if len(data['items']) > 0:
-        # sleep the thread for the cooldown period
-        cooldown = data["cooldown"]
-        sleep(cooldown)
+    # Take treasure
+    take_json_response = take_treasure(data)
 
-        # take treasure
-        take_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/take/", json={
-            "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
-        print(f"Taken treasure: {take_response.json()}")
+    # Sell treasure
+    sell_json_response = sell_treasure(data)
 
-    if data['title'].lower() == 'shop':
-        # sleep the thread for the cooldown period
-        cooldown = data["cooldown"]
-        sleep(cooldown)
-        # sell treasure for riches and glory :)
-        sell_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", json={
-            "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
-        print(f"Sold Treasure: {sell_response.json()}")
-
-        # sleep the thread for the cooldown period
-        cooldown = data["cooldown"]
-        sleep(cooldown)
-
-        confirm_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", json={
-            "name": "treasure", "confirm": "yes"}, headers={'Authorization': f"Token {TOKEN}"})
-        print(
-            f"\n\n\n\n\nSale of Treasure Confirmed\n\n\n {confirm_response.json()}")
+    # Check Status, Inventory for available gold coins
+    # if coins >= 1000
+    # change name
+    # mine coin
 
     # set the player's destination room
     # add it to the room_datails
