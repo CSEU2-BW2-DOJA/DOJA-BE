@@ -154,8 +154,14 @@ while q.size() > 0:
     # get the response
     data = response.json()
 
-    # set the player's destination room
-    # add it to the room_datails
+    if len(data['items']) > 0:
+        # take treasure
+        take_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/take/", json={
+                                      "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
+        print(f"Taken treasure: {take_response.json()}")
+
+        # set the player's destination room
+        # add it to the room_datails
     room_details.append(data)
 
     # new player position
