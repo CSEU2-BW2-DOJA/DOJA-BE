@@ -10,8 +10,7 @@ def take_treasure(data):
     # Take treasure
     if len(data['items']) > 0:
         # sleep for the cooldown period before next request
-        cooldown = data["cooldown"]
-        sleep(cooldown)
+        sleep(data["cooldown"])
 
         # take treasure
         take_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/take/", json={
@@ -24,16 +23,15 @@ def sell_treasure(data):
     # Sell treasure
     if data['title'].lower() == 'shop':
         # sleep for the cooldown period before next request
-        cooldown = data["cooldown"]
-        sleep(cooldown)
+        sleep(data["cooldown"])
+
         # sell treasure for riches and glory :)
         sell_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", json={
             "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
         print(f"Sold Treasure: {sell_response.json()}")
 
         # sleep for the cooldown period before next request
-        cooldown = data["cooldown"]
-        sleep(cooldown)
+        sleep(data["cooldown"])
 
         confirm_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", json={
             "name": "treasure", "confirm": "yes"}, headers={'Authorization': f"Token {TOKEN}"})

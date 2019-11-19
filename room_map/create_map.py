@@ -203,8 +203,7 @@ while q.size() > 0:
         f.write(json.dumps(room_details))
 
     # sleep the thread for the cooldown period
-    cooldown = data["cooldown"]
-    sleep(cooldown)
+    sleep(data["cooldown"])
 
     # call get_unexplored_room to add the next direction to the queue
     get_unexplored_room(q)
