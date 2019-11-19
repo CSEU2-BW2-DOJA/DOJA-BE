@@ -49,6 +49,5 @@ def goto(current_room_id, destination_room_id):
     for direction in path:
         data = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/move/", json={
                              "direction": direction}, headers={'Authorization': f"Token {TOKEN}"}).json()
-        print(data)
         cooldown = data["cooldown"]
         sleep(cooldown)
