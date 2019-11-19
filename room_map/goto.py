@@ -34,11 +34,24 @@ def find_path(room_map, current_room_id, destination_room_id):
             q.enqueue(searched_room_id)
     return None
 
-def goto(current_room_id, destination_room_id):
+def goto(current_room_id, destination_room_id_or_title):
     TOKEN = config("TOKEN")
+    room_details = []
     room_map = {}
+    with open("room_details.py", "r") as f:
+        room_details = json.loads(f.read())
     with open("room_graph.py", "r") as f:
         room_map = json.loads(f.read())
+    destination_room_id = destination_room_id_or_title
+    # if room id not in room_graph
+    if destination_room_id not in room_map:
+        # find room with specified name in room_details
+        destination_room_id_or_title = destination_room_id_or_title.lower()
+        for room_info in room_details:
+            if room_info['title'].lower() == destination_room_id_or_title:
+                destination_room_id = str(room_info['room_id'])
+                break
+
     # Traverse the map to find the path
     path = find_path(room_map, current_room_id, destination_room_id)
     # If path not found, print "path to {destination_room_id} not found"
