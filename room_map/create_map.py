@@ -154,25 +154,37 @@ while q.size() > 0:
     # get the response
     data = response.json()
 
+    print(f"\nNew Item: {data['items']}\n")
     if len(data['items']) > 0:
+        # sleep the thread for the cooldown period
+        cooldown = data["cooldown"]
+        sleep(cooldown)
+
         # take treasure
         take_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/take/", json={
-                                      "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
+            "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
         print(f"Taken treasure: {take_response.json()}")
 
     if data['title'].lower() == 'shop':
-            # sell treasure for riches and glory :)
+        # sleep the thread for the cooldown period
+        cooldown = data["cooldown"]
+        sleep(cooldown)
+        # sell treasure for riches and glory :)
         sell_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", json={
-                                      "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
+            "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
         print(f"Sold Treasure: {sell_response.json()}")
 
+        # sleep the thread for the cooldown period
+        cooldown = data["cooldown"]
+        sleep(cooldown)
+
         confirm_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", json={
-                                         "name": "treasure", "confirm": "yes"}, headers={'Authorization': f"Token {TOKEN}"})
+            "name": "treasure", "confirm": "yes"}, headers={'Authorization': f"Token {TOKEN}"})
         print(
             f"\n\n\n\n\nSale of Treasure Confirmed\n\n\n {confirm_response.json()}")
 
-        # set the player's destination room
-        # add it to the room_datails
+    # set the player's destination room
+    # add it to the room_datails
     room_details.append(data)
 
     # new player position
