@@ -15,6 +15,9 @@ def take_treasure(data):
         # take treasure
         take_response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/take/", json={
             "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"})
+        response_data = take_response.json()
+        print(
+            f"Picked a treasure inside {response_data['title']}")
         return take_response.json()
 
 
