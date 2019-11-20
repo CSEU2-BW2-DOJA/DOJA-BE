@@ -22,8 +22,9 @@ def mine(new_proof):
         headers=auth,
         json={"proof": new_proof}
     )
-    print(res)
-    return res.json()
+    res_json = res.json()
+    print(res_json)
+    return res_json
 
 
 def valid_proof(last_proof, proof, difficulty):
