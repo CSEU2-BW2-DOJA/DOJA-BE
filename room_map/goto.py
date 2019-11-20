@@ -2,13 +2,16 @@ import json
 import requests
 from decouple import config
 from time import sleep
+import argparse
 from util import Queue
+
 
 def directionToRoom(room_map, current_room_id, room_id):
     for d, r in room_map[current_room_id].items():
         if r == room_id:
             return d
     return None
+
 
 def find_path(room_map, current_room_id, destination_room_id):
     visited = set()
@@ -29,18 +32,20 @@ def find_path(room_map, current_room_id, destination_room_id):
                 correct_path = paths[searched_room_id]
                 directions = []
                 for i in range(len(correct_path) - 1):
-                    directions.append(directionToRoom(room_map, correct_path[i], correct_path[i + 1]))
+                    directions.append(directionToRoom(
+                        room_map, correct_path[i], correct_path[i + 1]))
                 return directions
             q.enqueue(searched_room_id)
     return None
+
 
 def goto(current_room_id, destination_room_id_or_title, can_fly=False, can_dash=False):
     TOKEN = config("TOKEN")
     room_details = []
     room_map = {}
-    with open("room_details.py", "r") as f:
+    with open("room_details_copy.py", "r") as f:
         room_details = json.loads(f.read())
-    with open("room_graph.py", "r") as f:
+    with open("room_graph_copy.py", "r") as f:
         room_map = json.loads(f.read())
     destination_room_id = destination_room_id_or_title
     # if room id not in room_graph
@@ -69,7 +74,7 @@ def goto(current_room_id, destination_room_id_or_title, can_fly=False, can_dash=
                 if str(room_info['room_id']) == current_room_id:
                     if room_info['terrain'].lower() == "elevated":
                         data = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/fly/", json={
-                             "direction": path[i]}, headers={'Authorization': f"Token {TOKEN}"}).json()
+                            "direction": path[i]}, headers={'Authorization': f"Token {TOKEN}"}).json()
                         used_flight = True
                         break
                     else:
@@ -93,16 +98,52 @@ def goto(current_room_id, destination_room_id_or_title, can_fly=False, can_dash=
                     cur = next_room_id
                 ids_to_dash_through = ','.join(ids_to_dash_through)
                 data = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/dash/", json={
-                             "direction": path[i], "next_room_ids": ids_to_dash_through}, headers={'Authorization': f"Token {TOKEN}"}).json()
+                    "direction": path[i], "next_room_ids": ids_to_dash_through}, headers={'Authorization': f"Token {TOKEN}"}).json()
                 i += len(directions_to_dash_through) - 1
                 used_dash = True
         # just walk if didn't use flight or dash
         if not used_flight and not used_dash:
             next_room_id = room_map[current_room_id][path[i]]
             data = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/move/", json={
-                             "direction": path[i], "next_room_id": next_room_id}, headers={'Authorization': f"Token {TOKEN}"}).json()
-            
+                "direction": path[i], "next_room_id": next_room_id}, headers={'Authorization': f"Token {TOKEN}"}).json()
+
         cooldown = data["cooldown"]
         print(data)
         sleep(cooldown)
         current_room_id = str(data['room_id'])
+
+
+def get_current_room():
+    TOKEN = config("TOKEN")
+    # make request to the init endpoint
+    response = requests.get("https://lambda-treasure-hunt.herokuapp.com/api/adv/init/",
+                            headers={'Authorization': f"Token {TOKEN}"}).json()
+
+    # get room id
+    room_id = response["room_id"]
+    # get cooldown and sleep for the cooldown period
+    cooldown = response["cooldown"]
+    sleep(cooldown)
+
+    # return the room_id in string format
+    return str(room_id)
+
+
+if __name__ == "__main__":
+    # instantiate the argument parser
+    parser = argparse.ArgumentParser()
+
+    # add the filename argument to the parser
+    parser.add_argument("destination", help="The room you want to go to")
+
+    # parse to get the argument
+    args = parser.parse_args()
+
+    # get the player's current room
+    current_room = get_current_room()
+
+    # get the destination room
+    destination_room = args.destination
+
+    # call goto with the arg and current room
+    goto(current_room, destination_room)
