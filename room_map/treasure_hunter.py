@@ -166,6 +166,8 @@ if __name__ == "__main__":
         # get cooldown and sleep for the cooldown period
         cooldown = response["cooldown"]
         sleep(cooldown)
+        # get the gold balance
+        gold = response["gold"]
 
         print("\n******  Sold a coin  ******\n")
-        print(response)
+        print(f"\n******  You have {gold} gold coins  ******\n")
