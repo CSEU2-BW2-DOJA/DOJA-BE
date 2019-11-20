@@ -133,7 +133,7 @@ if __name__ == "__main__":
         current_room = get_current_room()
         # if couldn't find the treasure, repeat
         while not pick_up_item(current_room, "tiny treasure"):
-            pass
+            current_room = get_current_room()
         current_room = get_current_room()
         goto(current_room, "Shop")
         # sell the treasure
