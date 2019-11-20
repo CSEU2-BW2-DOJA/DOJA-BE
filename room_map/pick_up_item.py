@@ -35,6 +35,7 @@ def pick_up_item(current_room_id, item_name, can_fly=False, can_dash=False):
     if 'Item not found: +5s CD' in data['errors']:
         return False
     else:
+        print(f"\n******  Picked up {item_name}  ******\n")
         return True
 
 if __name__ == "__main__":
