@@ -103,6 +103,9 @@ def goto(current_room_id, destination_room_id_or_title_or_item, can_fly=False, c
                 used_dash = True
         # just walk if didn't use flight or dash
         if not used_flight and not used_dash:
+            print(i)
+            print(path)
+            print(room_map[current_room_id])
             next_room_id = room_map[current_room_id][path[i]]
             data = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/move/", json={
                 "direction": path[i], "next_room_id": next_room_id}, headers={'Authorization': f"Token {TOKEN}"}).json()
