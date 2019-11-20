@@ -110,6 +110,7 @@ def goto_treasure(current_room_id, destination_room_id_or_title, can_fly=False, 
 
 
 def get_current_room():
+    TOKEN = config("TOKEN")
     # make request to the init endpoint
     response = requests.get("https://lambda-treasure-hunt.herokuapp.com/api/adv/init/",
                             headers={'Authorization': f"Token {TOKEN}"}).json()
