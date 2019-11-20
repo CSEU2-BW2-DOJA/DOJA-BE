@@ -5,6 +5,7 @@ from time import sleep
 from random import randint
 from util import Queue
 from goto import goto, find_path
+from pick_up_item import pick_up_item
 
 
 def goto_treasure(current_room_id, destination_room_id_or_title, can_fly=False, can_dash=False):
@@ -128,21 +129,12 @@ if __name__ == "__main__":
 
     # keep hunting until the user stops the script
     while True:
-        # get the player's current room
         current_room = get_current_room()
-        # set variable found_treasure to None
-        found_treasure = None
-        # while found_treasure is None
-        while found_treasure is None:
-            # generate a random interval between 2 and 500
-            target_room = str(randint(2, 499))
-            # call goto_treasure
-            found_treasure = goto_treasure(current_room, target_room)
-            # get current room
-            current_room = get_current_room()
-
-        # call goto and pass current location and 1
-        goto(current_room, "1")
+        # if couldn't find the treasure, repeat
+        while not pick_up_item(current_room, "tiny treasure"):
+            pass
+        current_room = get_current_room()
+        goto(current_room, "Shop")
         # sell the treasure
         response = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", json={
             "name": "treasure"}, headers={'Authorization': f"Token {TOKEN}"}).json()
