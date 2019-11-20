@@ -12,8 +12,7 @@ def directionToRoom(room_map, current_room_id, room_id):
             return d
     return None
 
-
-def find_path(room_map, current_room_id, destination_room_id):
+def find_path(room_map, room_details, current_room_id, destination_room_id_item_room_name):
     visited = set()
     paths = {}
     q = Queue()
@@ -28,7 +27,17 @@ def find_path(room_map, current_room_id, destination_room_id):
             newPath = paths[room][:]
             newPath.append(searched_room_id)
             paths[searched_room_id] = newPath
-            if searched_room_id == destination_room_id:
+            room_found = False
+            for room_info in room_details:
+                if room_info['title'].lower() == destination_room_id_item_room_name.lower():
+                    room_found = True
+                    break
+                if 'items' in room_info and destination_room_id_item_room_name in room_info['items']:
+                    room_found = True
+                    break
+            if searched_room_id == destination_room_id_item_room_name:
+                room_found = True
+            if room_found:
                 correct_path = paths[searched_room_id]
                 directions = []
                 for i in range(len(correct_path) - 1):
@@ -47,21 +56,11 @@ def goto(current_room_id, destination_room_id_or_title, can_fly=False, can_dash=
         room_details = json.loads(f.read())
     with open("room_graph_copy.py", "r") as f:
         room_map = json.loads(f.read())
-    destination_room_id = destination_room_id_or_title
-    # if room id not in room_graph
-    if destination_room_id not in room_map:
-        # find room with specified name in room_details
-        destination_room_id_or_title = destination_room_id_or_title.lower()
-        for room_info in room_details:
-            if room_info['title'].lower() == destination_room_id_or_title:
-                destination_room_id = str(room_info['room_id'])
-                break
-
     # Traverse the map to find the path
-    path = find_path(room_map, current_room_id, destination_room_id)
+    path = find_path(room_map, room_details, current_room_id, destination_room_id_or_title)
     # If path not found, print "path to {destination_room_id} not found"
     if not path:
-        print(f"path to {destination_room_id} not found")
+        print(f"path to {destination_room_id_or_title} not found")
         return
     # If path found, go through each room to the destination room
     for i in range(len(path)):
@@ -72,7 +71,7 @@ def goto(current_room_id, destination_room_id_or_title, can_fly=False, can_dash=
         if can_fly:
             for room_info in room_details:
                 if str(room_info['room_id']) == current_room_id:
-                    if room_info['terrain'].lower() == "elevated":
+                    if 'terrain' in room_info and room_info['terrain'].lower() == "elevated":
                         data = requests.post("https://lambda-treasure-hunt.herokuapp.com/api/adv/fly/", json={
                             "direction": path[i]}, headers={'Authorization': f"Token {TOKEN}"}).json()
                         used_flight = True
