@@ -91,3 +91,11 @@ To start making money, enter this from the command line:
 ```sh
 python treasure_hunter.pu
 ```
+
+### pick_up_item.py
+
+There are so many awesome and mysterious artifacts lying around in the game. To pick up an item that catches your fancy, simply do:
+
+```sh
+python pick_up_item.py [name of item]
+```
