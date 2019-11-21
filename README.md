@@ -79,3 +79,15 @@ This script takes a single command line argument which is the destination room. 
 ```sh
 python goto.py <destination_room_id>
 ```
+
+### treasure_hunter.py
+
+My favorite 🤗.
+
+As the name implies, the script hunts for treasures and sells them when they are found. It is completely automated, so just start it from the command line and watch the output in the command. I guarantee, you will be rich and famous.
+
+To start making money, enter this from the command line:
+
+```sh
+python treasure_hunter.pu
+```
