@@ -15,3 +15,10 @@ Then install dependencies with:
 ```sh
 pipenv install
 ```
+
+The scripts require that a `.env` file is added at the root of the directory. The `.env` file should have the following content:
+
+```sh
+TOKEN="[PLAYER'S TOKEN]"
+NAME="[PLAYER'S NAME]"
+```
