@@ -89,7 +89,7 @@ As the name implies, the script hunts for treasures and sells them when they are
 To start making money 💵, enter this from the command line:
 
 ```sh
-python treasure_hunter.pu
+python treasure_hunter.py
 ```
 
 ### pick_up_item.py
@@ -108,4 +108,25 @@ Use the script like this:
 
 ```sh
 python change_name.py
+```
+
+### examine_well.py
+
+Now the plot thickens 🎦.
+
+To find out the room where you must be to mine a Lambda coin, you need to peer into the deep dark water of the wishing well. The wishing well is the modern reincarnate of the Oracle of Delphi so you get a head-scratching prophecy.
+
+To start the script to get the prophecy, enter:
+
+```sh
+python examine_well.py
+```
+
+from the command line. The script writes the prophecy to a file named `wishing_well_prophecy.py`. You have to convert the binary codes to text to decipher what room you are allowed to mine. You can paste it [here](https://www.rapidtables.com/convert/number/binary-to-ascii.html) to translate the binary to ASCII.
+
+If you peer hard enough at the ASCII text, you will decipher the room where your coin awaits you.
+Navigate to the room with this command:
+
+```sh
+python goto.py [room_id]
 ```
