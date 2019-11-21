@@ -188,6 +188,6 @@ It returns your coin balance
 }
 ```
 
-## Full Lambda Treasure Hunt details/rules
+## Full Lambda Treasure Hunt details/rules 📖
 
 To view the rules of participating in the Lambda Treasure Hunt, check out the [Official Build Week readme](https://github.com/LambdaSchool/CS-Build-Week-2)
