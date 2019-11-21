@@ -130,3 +130,15 @@ Navigate to the room with this command:
 ```sh
 python goto.py [room_id]
 ```
+
+### mine.py
+
+This script can be found in the mine folder. It mines a coin on the Lambda Blockchain.
+
+Be sure to be present in the room specified by the wishing well. If unsure you can always repeat the steps involved in getting the wishing well's prophecy.
+
+To begin mining start the script
+
+```sh
+python mine.py
+```
