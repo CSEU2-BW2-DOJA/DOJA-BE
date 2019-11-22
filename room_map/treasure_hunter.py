@@ -27,7 +27,8 @@ def goto_treasure(current_room_id, destination_room_id_or_title, can_fly=False, 
                 break
 
     # Traverse the map to find the path
-    path = find_path(room_map, current_room_id, destination_room_id)
+    path = find_path(room_map, room_details, current_room_id, destination_room_id)
+    
     # If path not found, print "path to {destination_room_id} not found"
     if not path:
         print(f"path to {destination_room_id} not found")
